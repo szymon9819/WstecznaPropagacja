@@ -1,0 +1,147 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WstecznaPropagacja
+{
+    class Siec
+    {
+        public Siec(int[] neuronyWDanejWarstwie)
+        {
+            generujNeurony(neuronyWDanejWarstwie);
+            wyswietl(warstwy);
+            generujWagi(neuronyWDanejWarstwie);
+        }
+
+        public Siec(int[] neuronyWDanejWarstwie, List<List<Waga>> listaWag)
+        {
+            generujNeurony(neuronyWDanejWarstwie);
+            wczytajWagi(listaWag, neuronyWDanejWarstwie);
+            wyswietl(warstwy);
+        }
+
+        public List<List<Neuron>> warstwy = new List<List<Neuron>>();
+
+        private void wczytajWagi(List<List<Waga>> listaWag, int[] neuronyWDanejWarstwie)
+        {
+            int x = 0;
+            for (int i = 0; i < warstwy.Count; i++)
+            {
+                for (int j = 0; j < warstwy[i].Count; j++)
+                {
+                    warstwy[i][j].listaWag = listaWag[x];
+                    x++;
+                }
+            }
+        }
+
+
+        private void generujNeurony(int[] neuronyWDanejWarstwie)
+        {
+            for (int i = 1; i < neuronyWDanejWarstwie.Length; i++)
+            {
+                List<Neuron> listaNeuronow = new List<Neuron>();
+                for (int j = 0; j < neuronyWDanejWarstwie[i]; j++)
+                {
+                    listaNeuronow.Add(new Neuron());
+                }
+                warstwy.Add(listaNeuronow);
+            }
+        }
+
+        private void generujWagi(int[] neuronyWDanejWarstwie)
+        {
+            Random random = new Random();
+            for (int i = 0; i < warstwy.Count; i++)
+            {
+                for (int j = 0; j < warstwy[i].Count; j++)
+                {
+                    if (i == 0)
+                    {
+                        for (int k = 0; k < neuronyWDanejWarstwie[0]; k++)
+                            warstwy[i][j].listaWag.Add(new Waga(Math.Round(random.NextDouble(), 1)));
+                    }
+                    else
+                    {
+                        for (int k = 0; k < warstwy[i - 1].Count; k++)
+                            warstwy[i][j].listaWag.Add(new Waga(Math.Round(random.NextDouble(), 1)));
+                    }
+                }
+            }
+        }
+
+        public void wyliczWartoscWyjsciowaSieci(List<List<Neuron>> warstwy, double[] wejscia)
+        {
+            foreach (var tmp in warstwy.First())
+            {
+                tmp.suma += (tmp.listaWag[0].waga * tmp.dodatkoweWejscie);
+                for (int i = 0; i < wejscia.Length; i++)
+                {
+                    Console.WriteLine("waga: " + tmp.listaWag[i].waga + "\twejscie: " + wejscia[i]);
+                    //od i+1 bo wejscie dodatkwoe wejscie jest rozpatrywane przed forem
+                    tmp.suma += (tmp.listaWag[i+1].waga * wejscia[i]);                    
+                }
+                tmp.wyjscie_ = AktywacjaNeuronu.funkcjaAktywacjiNeuronu(tmp.suma);
+                Console.WriteLine("Suma: " + tmp.suma);
+                Console.WriteLine("Wyjscie: " + tmp.wyjscie_);
+            }
+
+            for(int k=1;k<warstwy.Count;k++)
+            {
+                for(int j=0;j< warstwy[k].Count;j++)
+                {
+                    warstwy[k][j].suma += (warstwy[k][j].listaWag[0].waga * warstwy[k][j].dodatkoweWejscie);
+                    for (int i = 0; i < warstwy[k-1].Count; i++)
+                    {
+                        Console.WriteLine("waga: " + warstwy[k][j].listaWag[i].waga + "\twejscie: " + AktywacjaNeuronu.funkcjaAktywacjiNeuronu(warstwy[k - 1][i]));
+                        //od i+1 bo wejscie dodatkwoe wejscie jest rozpatrywane przed forem
+                        warstwy[k][j].suma += (warstwy[k][j].listaWag[i + 1].waga * AktywacjaNeuronu.funkcjaAktywacjiNeuronu(warstwy[k - 1][i]));
+                    }
+                    warstwy[k][j].wyjscie_ = AktywacjaNeuronu.funkcjaAktywacjiNeuronu(warstwy[k][j].suma);
+                    Console.WriteLine("Suma: " + warstwy[k][j].suma);
+                    Console.WriteLine("Wyjscie: " + warstwy[k][j].wyjscie_);
+                }
+            }
+        }
+
+        public List<double> daneWyjsciowe()
+        {
+            List<double> daneWyjsciowe = new List<double>();
+
+            for(int i = 0; i < warstwy[warstwy.Count - 1].Count; i++)
+            {
+                daneWyjsciowe.Add(warstwy[warstwy.Count - 1][i].wyjscie_);
+            }
+
+            return daneWyjsciowe;
+        }
+
+        public void wyswietlListeNeuronowZWagami()
+        {
+            foreach (var x in warstwy)
+            {
+                {
+                    foreach (var c in x)
+                    {
+                        c.wyswietlWagi();
+                    }
+                    Console.WriteLine();
+                }
+
+            }
+        }
+
+        public void wyswietl(List<List<Neuron>> lista)
+        {
+            foreach (var tmp in lista)
+            {
+                foreach (var n in tmp)
+                    Console.Write(n + "\t");
+                Console.WriteLine();
+            }
+        }
+    }
+}

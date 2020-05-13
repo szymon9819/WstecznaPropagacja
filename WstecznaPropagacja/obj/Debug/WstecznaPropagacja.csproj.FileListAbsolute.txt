@@ -1,0 +1,10 @@
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\bin\Debug\WstecznaPropagacja.exe.config
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\bin\Debug\WstecznaPropagacja.exe
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\bin\Debug\WstecznaPropagacja.pdb
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.csprojAssemblyReference.cache
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.Properties.Resources.resources
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.csproj.GenerateResource.cache
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.csproj.CoreCompileInputs.cache
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.exe
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.pdb
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.Form1.resources
