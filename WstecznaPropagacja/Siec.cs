@@ -13,6 +13,7 @@ namespace WstecznaPropagacja
         {
             generujNeurony(neuronyWDanejWarstwie);
             wyswietl(warstwy);
+            this.iloscWejsc = neuronyWDanejWarstwie[0];
             generujWagi(neuronyWDanejWarstwie);
         }
 
@@ -20,10 +21,12 @@ namespace WstecznaPropagacja
         {
             generujNeurony(neuronyWDanejWarstwie);
             wczytajWagi(listaWag, neuronyWDanejWarstwie);
+            this.iloscWejsc = neuronyWDanejWarstwie[0];
             wyswietl(warstwy);
         }
 
         public List<List<Neuron>> warstwy = new List<List<Neuron>>();
+        int iloscWejsc;
 
         private void wczytajWagi(List<List<Waga>> listaWag, int[] neuronyWDanejWarstwie)
         {
@@ -75,6 +78,7 @@ namespace WstecznaPropagacja
 
         public void wyliczWartoscWyjsciowaSieci(List<List<Neuron>> warstwy, double[] wejscia)
         {
+            wejscia = wejscia.Take(iloscWejsc).ToArray();
             foreach (var tmp in warstwy.First())
             {
                 tmp.suma += (tmp.listaWag[0].waga * tmp.dodatkoweWejscie);
@@ -104,6 +108,16 @@ namespace WstecznaPropagacja
                     Console.WriteLine("Suma: " + warstwy[k][j].suma);
                     Console.WriteLine("Wyjscie: " + warstwy[k][j].wyjscie_);
                 }
+            }
+            zerujSume();
+        }
+
+        private void zerujSume()
+        {
+            foreach(var warstwa in warstwy)
+            {
+                foreach (var neuron in warstwa)
+                    neuron.suma = 0;
             }
         }
 

@@ -9,35 +9,37 @@ namespace WstecznaPropagacja
 {
     class Propagacja
     {
-        public Propagacja(Siec siec, double[] wejscia)
+        public Propagacja(Siec siec, double[] wejscia,int iloscWejsc)
         {
             this.siec = siec;
-            this.wejscia = wejscia;
+            this.wejscia = wejscia.Take(iloscWejsc).ToArray();
         }
         private Siec siec;
         // public List<double> bladWyjscia = new List<double>();
         public double wspolczynnik = 0.1;
         public double parametrBeta = 1;
         double[] wejscia;
-        List<List<double>> korektyWagCalejSieci = new List<List<double>>(); // korekty wag całej sieci w odwrotnej kolejnosci
+        public List<List<double>> korektyWagCalejSieci = new List<List<double>>(); // korekty wag całej sieci w odwrotnej kolejnosci
         public List<double> korektySum = new List<double>();
         public List<double> korektyWag = new List<double>();
         public List<double> korektyWejsc = new List<double>();
 
         public void wyliczBlad(double[] oczekiwaneWyjscie)
         {
+            korektyWejsc.Clear();
             for (int i = 0; i < oczekiwaneWyjscie.Length; i++)
             {
+                
                 Console.WriteLine("wyjscie: " + siec.warstwy[siec.warstwy.Count - 1][i].wyjscie_);
                 Console.WriteLine("oczekiwane: " + oczekiwaneWyjscie[i]);
-                korektyWejsc.Add(Math.Abs(siec.warstwy[siec.warstwy.Count - 1][i].wyjscie_ - oczekiwaneWyjscie[i]) * wspolczynnik);
+                korektyWejsc.Add((oczekiwaneWyjscie[i] - siec.warstwy[siec.warstwy.Count - 1][i].wyjscie_) * wspolczynnik);
                 Console.WriteLine("blad wyjscia neuronu " + i + " : " + korektyWejsc[i]);
                 Console.WriteLine("------------------------------------------------------------------------");
             }
         }
 
-        public List<List<double>> wyliczKoretke()
-        {
+        public void wyliczKoretke()
+        {   
             //iteracja po warstwach sieci od konca
             for (int l = siec.warstwy.Count - 1; l >= 0; l--)
             {
@@ -84,32 +86,28 @@ namespace WstecznaPropagacja
                             //korekta wejść
                             korektyWejsc.Add(korektySum[n] * siec.warstwy[l][n].listaWag[i].waga);
                             Console.WriteLine("korekta wejscia: " + korektySum[n] * siec.warstwy[l][n].listaWag[i].waga);
-
                         }
                     }
                 }
                 korektySum.Clear();
-                korektyWagCalejSieci.Add(new List<double>(korektyWag));
+                if(korektyWagCalejSieci.Count != siec.warstwy.Count)
+                    korektyWagCalejSieci.Add(new List<double>(korektyWag));
+                else
+                {
+                    korektyWagCalejSieci.Reverse();
+                    for (int i = 0; i < korektyWag.Count; i++)
+                        korektyWagCalejSieci[l][i] += korektyWag[i];
+                    korektyWagCalejSieci.Reverse();
+                }
                 korektyWag.Clear();
             }
-            //odwrocenie kolenjosci wag
-            korektyWagCalejSieci.Reverse();
-
             Console.WriteLine("\n------------------------------------------------------------------------\n Korekty wag");
-            foreach (var listaWag in korektyWagCalejSieci)
-            {
-                foreach (var waga in listaWag)
-                {
-                    Console.WriteLine(waga + "\t");
-                }
-                Console.WriteLine();
-            }
-
-            return korektyWagCalejSieci;
+            wyswietlKOrektyWszystkichWag(korektyWagCalejSieci);
         }
 
         public void nadpiszWagi(Siec siec, List<List<double>> korektyWagCalejSieci)
         {
+            korektyWagCalejSieci.Reverse();
             Console.WriteLine("\n------------------------------------------------------------------------\n");
             int indeksWarstwy = 0;
             foreach (var warstwa in siec.warstwy)
@@ -127,6 +125,32 @@ namespace WstecznaPropagacja
                 }
                 indeksWarstwy++;
             }
+            korektyWagCalejSieci.Reverse();
+        }
+
+        private void wyswietlKOrektyWszystkichWag(List<List<double>> korektyWagCalejSieci)
+        {
+            korektyWagCalejSieci.Reverse();
+            foreach (var listaWag in korektyWagCalejSieci)
+            {
+                foreach (var waga in listaWag)
+                {
+                    Console.WriteLine(waga + "\t");
+                }
+                Console.WriteLine();
+            }
+            korektyWagCalejSieci.Reverse();
+        }
+
+        private double iloscNeuronow()
+        {
+            int n = 0;
+            for (int i = 0; i < siec.warstwy.Count; i++)
+            {
+                for (int j = 0; j < siec.warstwy[i].Count; j++)
+                    n += 1;
+            }
+                return n;
         }
     }
 }

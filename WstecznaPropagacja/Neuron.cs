@@ -28,7 +28,7 @@ namespace WstecznaPropagacja
             foreach (var c in listaWag)
                 Console.Write(c + "\t");
             
-            Console.Write("\tneuron: "+ suma+"\n");
+            Console.Write("\tsuma neuronu: "+ suma+"\n");
         }
     }
 }
