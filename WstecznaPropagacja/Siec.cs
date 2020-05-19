@@ -84,13 +84,10 @@ namespace WstecznaPropagacja
                 tmp.suma += (tmp.listaWag[0].waga * tmp.dodatkoweWejscie);
                 for (int i = 0; i < wejscia.Length; i++)
                 {
-                    Console.WriteLine("waga: " + tmp.listaWag[i].waga + "\twejscie: " + wejscia[i]);
                     //od i+1 bo wejscie dodatkwoe wejscie jest rozpatrywane przed forem
                     tmp.suma += (tmp.listaWag[i+1].waga * wejscia[i]);                    
                 }
                 tmp.wyjscie_ = AktywacjaNeuronu.funkcjaAktywacjiNeuronu(tmp.suma);
-                Console.WriteLine("Suma: " + tmp.suma);
-                Console.WriteLine("Wyjscie: " + tmp.wyjscie_);
             }
 
             for(int k=1;k<warstwy.Count;k++)
@@ -100,13 +97,10 @@ namespace WstecznaPropagacja
                     warstwy[k][j].suma += (warstwy[k][j].listaWag[0].waga * warstwy[k][j].dodatkoweWejscie);
                     for (int i = 0; i < warstwy[k-1].Count; i++)
                     {
-                        Console.WriteLine("waga: " + warstwy[k][j].listaWag[i].waga + "\twejscie: " + AktywacjaNeuronu.funkcjaAktywacjiNeuronu(warstwy[k - 1][i]));
                         //od i+1 bo wejscie dodatkwoe wejscie jest rozpatrywane przed forem
                         warstwy[k][j].suma += (warstwy[k][j].listaWag[i + 1].waga * AktywacjaNeuronu.funkcjaAktywacjiNeuronu(warstwy[k - 1][i]));
                     }
                     warstwy[k][j].wyjscie_ = AktywacjaNeuronu.funkcjaAktywacjiNeuronu(warstwy[k][j].suma);
-                    Console.WriteLine("Suma: " + warstwy[k][j].suma);
-                    Console.WriteLine("Wyjscie: " + warstwy[k][j].wyjscie_);
                 }
             }
             zerujSume();

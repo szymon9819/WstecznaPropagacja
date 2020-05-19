@@ -8,3 +8,5 @@ C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\Wste
 C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.exe
 C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.pdb
 C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.Form1.resources
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.WlasnegoSchematu.resources
+C:\Users\szymo\source\repos\WstecznaPropagacja\WstecznaPropagacja\obj\Debug\WstecznaPropagacja.ZPliku.resources
