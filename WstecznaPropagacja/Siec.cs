@@ -65,12 +65,12 @@ namespace WstecznaPropagacja
                     if (i == 0)
                     {
                         for (int k = 0; k < neuronyWDanejWarstwie[0]; k++)
-                            warstwy[i][j].listaWag.Add(new Waga(Math.Round(random.NextDouble(), 1)));
+                            warstwy[i][j].listaWag.Add(new Waga(Math.Round(random.NextDouble()*2-1, 1)));
                     }
                     else
                     {
                         for (int k = 0; k < warstwy[i - 1].Count; k++)
-                            warstwy[i][j].listaWag.Add(new Waga(Math.Round(random.NextDouble(), 1)));
+                            warstwy[i][j].listaWag.Add(new Waga(Math.Round(random.NextDouble()*2-1, 1)));
                     }
                 }
             }

@@ -19,6 +19,7 @@ namespace WstecznaPropagacja
             this.parametrBetaBox.Text = "1";
         }
         string sciezkaPlikuZWagami = "";
+        string sciezkaPlikuZprobkami = "";
         List<double[]> listaProbek = new List<double[]>();
         List<double> testWejscia = new List<double>();
         List<List<Waga>> listaWagZPliku = new List<List<Waga>>();
@@ -30,7 +31,7 @@ namespace WstecznaPropagacja
         private void wybierzPlikBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Title = "Wybierz plik z próbkami";
+            openFileDialog.Title = "Wybierz plik z wagami";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -59,13 +60,28 @@ namespace WstecznaPropagacja
 
         private void przeuczSiecBtn_Click(object sender, EventArgs e)
         {
-            if (listaProbek.Count == 0)
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Wybierz plik z próbkami";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                listaProbek.Add(new double[] { 0, 1, 1 });
-                listaProbek.Add(new double[] { 1, 1, 0 });
-                listaProbek.Add(new double[] { 1, 0, 1 });
-                //listaProbek.Add(new double[] { 0, 1, 1 });    //z tą probką wagi są znacznie lepsze
-                listaProbek.Add(new double[] { 0, 0, 0 });
+                if (Path.GetExtension(openFileDialog.FileName) != ".txt")
+                {
+                    MessageBox.Show("Plik musi być w formacie txt");
+                    return;
+                }
+                sciezkaPlikuZprobkami = openFileDialog.FileName;                
+            }
+            if (sciezkaPlikuZprobkami == "")
+                return;
+
+            listaProbek = OdczytZapis.wczytajProbki(sciezkaPlikuZprobkami);
+
+            foreach(var c in listaProbek)
+            {
+                foreach (var ef in c)
+                    Console.Write(ef + " ");
+                Console.WriteLine();
             }
 
             Siec siec = new Siec(strukturaSieci, listaWagZPliku);
@@ -119,12 +135,16 @@ namespace WstecznaPropagacja
                 aktualneWejscia();
             }
 
-            if (testWejscia.Count == 2)
+            if (testWejscia.Count == strukturaSieci[0])
             {
-                testujBtn.Enabled = true;                
+                testujBtn.Enabled = true;
                 dodajBtn.Enabled = false;
             }
+
+            textBox1.Text = "";
+            textBox1.Focus();
         }
+
         private void aktualneWejscia()
         {
             string pom = "Wejscia: ";
@@ -141,7 +161,16 @@ namespace WstecznaPropagacja
         private void testujBtn_Click(object sender, EventArgs e)
         {
             siec.wyliczWartoscWyjsciowaSieci(siec.warstwy, testWejscia.ToArray());
-            wyjscieLbl.Text = "wyjscie: " + siec.daneWyjsciowe()[0];
+            List<double> wyjscia = siec.daneWyjsciowe();
+            string pom = "Wyjscia: ";
+            for (int i = 0; i < wyjscia.Count; i++)
+            {
+                if (i < wyjscia.Count - 1)
+                    pom += (wyjscia[i] + ", ");
+                else
+                    pom += wyjscia[i];
+            }
+            wyjscieLbl.Text = pom;
         }
 
         private void resetBtn_Click(object sender, EventArgs e)
@@ -149,7 +178,12 @@ namespace WstecznaPropagacja
             testWejscia.Clear();
             label5.Text = "Wejscia: ";
             dodajBtn.Enabled = true;
-        }              
+        }
 
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+               dodajBtn_Click(this, new EventArgs());
+        }
     }
 }

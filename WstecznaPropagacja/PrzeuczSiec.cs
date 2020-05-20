@@ -16,7 +16,7 @@ namespace WstecznaPropagacja
                 {
                     // siec.wyswietlListeNeuronowZWagami();
                     siec.wyliczWartoscWyjsciowaSieci(siec.warstwy, listaProbek[i]);
-                    propagacja.wyliczBlad(listaProbek[i].Skip(2).ToArray());
+                    propagacja.wyliczBlad(listaProbek[i].Skip(iloscWejsc).ToArray());
                     propagacja.wyliczKoretke(listaProbek[i], iloscWejsc);
                 }
                 randomizujListe(listaProbek);

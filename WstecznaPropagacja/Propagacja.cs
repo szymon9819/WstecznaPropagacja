@@ -14,7 +14,6 @@ namespace WstecznaPropagacja
             this.siec = siec;           
         }
         private Siec siec;
-        // public List<double> bladWyjscia = new List<double>();
         public double wspolczynnik = 0.1;
         public double parametrBeta = 1;
 

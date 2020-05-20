@@ -48,7 +48,6 @@ namespace WstecznaPropagacja
 
                 tmp = row.Trim().Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
                 List<Waga> tmp1 = new List<Waga>();
-                double[] pom = new double[tmp.Length];
                 for (int i = 0; i < tmp.Length; i++)
                 {
                     //zmiana . na ,
@@ -61,6 +60,24 @@ namespace WstecznaPropagacja
                 listaWag.Add(tmp1);
             }
             return (listaWag, neuronyWDanejWarstwie.ToArray());
+        }
+
+        static public List<double[]> wczytajProbki(string sciazkaPliku)
+        {
+            List<double[]> wczytaneProbki = new List<double[]>();
+            string[] file = File.ReadAllLines(@sciazkaPliku);
+           
+            foreach (var row in file)
+            {
+                var tmp= row.Trim().Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                List<double> pom = new List<double>();
+                foreach(var element in tmp)
+                {                   
+                    pom.Add(double.Parse(element));
+                }
+                wczytaneProbki.Add(pom.ToArray());
+            }
+            return wczytaneProbki;
         }
 
         static public void zapiszWagi(List<List<Neuron>> lista, @String nazwaPliku)

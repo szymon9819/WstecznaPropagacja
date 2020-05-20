@@ -49,6 +49,8 @@ namespace WstecznaPropagacja
         private void button1_Click(object sender, EventArgs e)
         {
             strukturaSieci.Add(int.Parse(textBox1.Text));
+            textBox1.Text = "";
+            textBox1.Focus();
             aktualnaStrukturaSieci();
         }
 
